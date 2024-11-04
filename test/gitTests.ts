@@ -1576,13 +1576,13 @@ no changes added to commit (use "git add" and/or "git commit -a")`,
         assertEx.defined(result, "result");
         assert.strictEqual(result.exitCode, 0);
         assertEx.defined(result.processId, "result.processId");
-        // assertEx.oneOf(result.stdout, ["https://github.com/ts-common/azure-js-dev-tools.git\n", "https://github.com/ts-common/azure-js-dev-tools\n"]);
+        assertEx.oneOf(result.stdout, ["https://github.com/ts-common/azure-js-dev-tools.git\n", "https://github.com/ts-common/azure-js-dev-tools\n"]);
         assert.strictEqual(result.stderr, "");
-        // assertEx.oneOf(result.configurationValue, ["https://github.com/ts-common/azure-js-dev-tools.git\n", "https://github.com/ts-common/azure-js-dev-tools\n"]);
+        assertEx.oneOf(result.configurationValue, ["https://github.com/ts-common/azure-js-dev-tools.git\n", "https://github.com/ts-common/azure-js-dev-tools\n"]);
       });
 
       it("outside git repository", async function () {
-        const folderPath: string = joinPath((await findFileInPath("package.json"))!, "../../../..");
+        const folderPath: string = joinPath((await findFileInPath("package.json"))!, "../..");
         const git = new ExecutableGit();
         const result: ExecutableGit.GetConfigurationValueResult = await git.getConfigurationValue("remote.origin.url", { executionFolderPath: folderPath });
         assertEx.defined(result, "result");
@@ -1603,14 +1603,14 @@ no changes added to commit (use "git add" and/or "git commit -a")`,
         assert.deepEqual(await git.getRepositoryUrl({ runner }), expectedResult.configurationValue);
       });
 
-      it.skip("inside git repository", async function () {
+      it("inside git repository", async function () {
         const git = new ExecutableGit();
         const result: string | undefined = await git.getRepositoryUrl();
         assertEx.oneOf(result, ["https://github.com/ts-common/azure-js-dev-tools.git", "https://github.com/ts-common/azure-js-dev-tools"]);
       });
 
       it("outside git repository", async function () {
-        const folderPath: string = joinPath((await findFileInPath("package.json"))!, "../../../..");
+        const folderPath: string = joinPath((await findFileInPath("package.json"))!, "../..");
         const git = new ExecutableGit();
         const result: string | undefined = await git.getRepositoryUrl({ executionFolderPath: folderPath });
         assert.strictEqual(result, undefined);
@@ -1699,7 +1699,7 @@ no changes added to commit (use "git add" and/or "git commit -a")`,
         assert.strictEqual(await git.getRemoteUrl("idontexist"), undefined);
       });
 
-      it.skip("with origin remote string", async function () {
+      it("with origin remote string", async function () {
         const git = new ExecutableGit();
         assertEx.startsWith((await git.getRemoteUrl("origin"))!, `https://github.com/ts-common/azure-js-dev-tools`);
       });
@@ -1737,10 +1737,10 @@ no changes added to commit (use "git add" and/or "git commit -a")`,
         const remotes: ExecutableGit.ListRemotesResult = await git.listRemotes();
         assertEx.defined(remotes, "remotes");
         assertEx.defined(remotes.remotes, "remotes.remotes");
-        // assertEx.containsAll(remotes.remotes["origin"], [
-        //   "https://github.com/",
-        //   "/azure-js-dev-tools"
-        // ]);
+        assertEx.containsAll(remotes.remotes["origin"], [
+          "https://github.com/",
+          "/azure-js-dev-tools"
+        ]);
       });
     });
   });
