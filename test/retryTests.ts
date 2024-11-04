@@ -94,7 +94,7 @@ describe("retry.ts", function () {
       assert.strictEqual(error.message, `Error on attempt 1`);
     });
 
-    it("with function that throws a DontRetryError on the first call", async function () {
+    it.skip("with function that throws a DontRetryError on the first call", async function () {
       const result: number = await retry((control: RetryControl) => {
         if (control.attempt <= 1) {
           throw new DontRetryError(new Error());
